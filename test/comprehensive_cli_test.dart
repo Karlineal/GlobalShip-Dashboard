@@ -136,7 +136,7 @@ void main() {
     await resetTestDataFile(); // 每个测试前重置数据
   });
 
-  final String appPrintedDataPath = Directory.current.path + "/data.json";
+  final String appPrintedDataPath = "${Directory.current.path}/data.json";
   final DateFormat expectedTimeFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); // 统一预期的时间格式
 
   group('CLI Application Tests', () {
@@ -465,7 +465,7 @@ void main() {
         print("      - Purpose: Verify an unknown action for the 'shipment' command shows an error.");
         var result = await runShipmentBoard(['shipment', '-a', 'delete']); // 'delete' is an invalid action
         print("      - Verification: Checking stdout for 'unknown action' error message.");
-        expect(result.stdout, contains('shipment 命令下未知的动作：\"delete\"'));
+        expect(result.stdout, contains('shipment 命令下未知的动作："delete"'));
         print("    --- ✅ TEST PASSED: Shipment command with unknown action ---");
       });
 
