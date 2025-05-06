@@ -20,13 +20,13 @@ String get _dataFilePathFromHandler {
 Future<Map<String, dynamic>> _loadDataInternal() async {
   final file = File(_dataFilePathFromHandler);
   if (!await file.exists()) {
-    print('（处理程序内部加载）文件 ${_dataFilePathFromHandler} 不存在，将使用空数据结构。');
+    print('（处理程序内部加载）文件 $_dataFilePathFromHandler 不存在，将使用空数据结构。');
     return {'shipments': [], 'customers': {}};
   }
   try {
     final content = await file.readAsString();
     if (content.trim().isEmpty) {
-      print('（处理程序内部加载）文件 ${_dataFilePathFromHandler} 为空，将使用空数据结构。');
+      print('（处理程序内部加载）文件 $_dataFilePathFromHandler 为空，将使用空数据结构。');
       return {'shipments': [], 'customers': {}};
     }
     final decoded = jsonDecode(content);
@@ -47,10 +47,10 @@ Future<Map<String, dynamic>> _loadDataInternal() async {
       decoded['customers'] = (decoded['customers'] as Map<String, dynamic>?) ?? {};
       return decoded;
     }
-    print('（处理程序内部加载）文件 ${_dataFilePathFromHandler} 解析结果非Map，将使用空数据结构。');
+    print('（处理程序内部加载）文件 $_dataFilePathFromHandler 解析结果非Map，将使用空数据结构。');
     return {'shipments': [], 'customers': {}};
   } catch (e) {
-    print('（处理程序内部加载）加载或解析文件 ${_dataFilePathFromHandler} 时发生错误: $e. 将使用空数据结构。');
+    print('（处理程序内部加载）加载或解析文件 $_dataFilePathFromHandler 时发生错误: $e. 将使用空数据结构。');
     return {'shipments': [], 'customers': {}};
   }
 }
@@ -61,7 +61,7 @@ Future<void> _saveDataInternal(Map<String, dynamic> dataToSave) async {
     await File(_dataFilePathFromHandler).writeAsString(jsonEncode(dataToSave));
     // 成功消息由调用函数打印
   } catch (e) {
-    print('（处理程序内部保存）保存数据到文件 ${_dataFilePathFromHandler} 时发生错误: $e');
+    print('（处理程序内部保存）保存数据到文件 $_dataFilePathFromHandler 时发生错误: $e');
     // 考虑是否需要重新抛出异常，让调用者知道保存失败
     // throw;
   }
@@ -104,7 +104,7 @@ Future<void> _createShipment() async {
   }
 
   stdout.write('运输方式 (Sea/Air): ');
-  final transport = stdin.readLineSync()?.trim()?.toUpperCase();
+  final transport = stdin.readLineSync()?.trim().toUpperCase();
   if (transport == null || !['SEA', 'AIR'].contains(transport)) {
     print('错误：运输方式必须是 "Sea" 或 "Air"。');
     return;

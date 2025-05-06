@@ -25,7 +25,7 @@ Future<void> _loadFromFile() async {
   final file = File(dataFilePath);
 
   if (!await file.exists()) {
-    print('（全局加载）文件 ${dataFilePath} 不存在。全局数据将为空。');
+    print('（全局加载）文件 $dataFilePath 不存在。全局数据将为空。');
     shipmentList.clear(); // 修改全局变量
     customerDB.clear();   // 修改全局变量
     print('已加载数据到全局状态，共 ${shipmentList.length} 条运单');
@@ -35,7 +35,7 @@ Future<void> _loadFromFile() async {
   try {
     final fileContent = await file.readAsString();
     if (fileContent.trim().isEmpty) {
-      print('（全局加载）文件 ${dataFilePath} 为空。全局数据将为空。');
+      print('（全局加载）文件 $dataFilePath 为空。全局数据将为空。');
       shipmentList.clear();
       customerDB.clear();
     } else {
@@ -53,13 +53,13 @@ Future<void> _loadFromFile() async {
                     MapEntry(k, Customer.fromJson(v as Map<String, dynamic>))) ??
             {};
       } else {
-        print('（全局加载）文件 ${dataFilePath} 内容格式不正确（非Map）。全局数据将为空。');
+        print('（全局加载）文件 $dataFilePath 内容格式不正确（非Map）。全局数据将为空。');
         shipmentList.clear();
         customerDB.clear();
       }
     }
   } catch (e) {
-    print('（全局加载）加载或解析文件 ${dataFilePath} 时发生错误: $e. 全局数据将为空。');
+    print('（全局加载）加载或解析文件 $dataFilePath 时发生错误: $e. 全局数据将为空。');
     shipmentList.clear();
     customerDB.clear();
   }
