@@ -1,4 +1,6 @@
-// bin/shipment_board.dart
+// File: bin/shipment_board.dart
+// 主要修改点：在 main 函数中检测 --tz 是否被用户指定，并将此信息传递给 handleShipmentCommand
+
 import 'dart:io';
 import 'dart:convert'; // 需要导入 dart:convert 以使用 utf8
 import 'package:args/args.dart';
@@ -77,7 +79,7 @@ Future<void> _saveToFile() async {
 void main(List<String> arguments) async {
   final parser = ArgParser()
     ..addOption('lang', abbr: 'l', help: '设置默认语言，如 en、ar')
-    ..addOption('tz', abbr: 'z', help: '设置时区偏移（小时），如 +3')
+    ..addOption('tz', abbr: 'z', help: '设置时区偏移（小时），如 +3') // 用户指定的时区
     ..addOption(
       'action',
       abbr: 'a',
@@ -95,7 +97,11 @@ void main(List<String> arguments) async {
   await _loadFromFile();
 
   final globalLang = argResults['lang'] ?? 'en';
+  // 解析时区参数，如果未提供或解析失败，则默认为0
   final globalTz = int.tryParse(argResults['tz'] ?? '0') ?? 0;
+  // 新增：检测 '--tz' 参数是否被用户实际提供
+  final bool tzWasSpecifiedByUser = argResults.wasParsed('tz');
+
 
   try {
     String? commandName = argResults.command?.name;
@@ -112,6 +118,7 @@ void main(List<String> arguments) async {
         await handleShipmentCommand(shipmentAction, {
           'lang': globalLang,
           'tz': globalTz,
+          'tz_specified': tzWasSpecifiedByUser, // 将标志传递下去
         });
         break;
       case 'save':
